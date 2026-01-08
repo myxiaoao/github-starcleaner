@@ -1,6 +1,20 @@
+<div align="center">
+
 # GitHub Star Cleaner
 
-A native macOS desktop application for batch managing and cleaning up your GitHub starred repositories.
+**A native macOS desktop application for batch managing and cleaning up your GitHub starred repositories**
+
+Built with Rust 🦀 and GPUI for blazing-fast performance
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/rust-1.85+-orange.svg)](https://www.rust-lang.org)
+[![Platform](https://img.shields.io/badge/platform-macOS-lightgrey.svg)](https://www.apple.com/macos)
+
+---
+
+A modern tool to manage your ever-growing GitHub stars list. Quickly browse, sort, filter, and batch unstar repositories you no longer need, all through an intuitive native interface.
+
+</div>
 
 ## Features
 
@@ -29,7 +43,7 @@ A native macOS desktop application for batch managing and cleaning up your GitHu
 
 2. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/github-starcleaner.git
+   git clone https://github.com/myxiaoao/github-starcleaner.git
    cd github-starcleaner
    ```
 
