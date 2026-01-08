@@ -1,0 +1,24 @@
+# Build output
+/target/
+
+# Documentation (generated)
+/docs/
+
+# Claude Code
+CLAUDE.md
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Rust
+**/*.rs.bk
+Cargo.lock
+
+# Icon build artifacts
+/resources/AppIcon.iconset/
