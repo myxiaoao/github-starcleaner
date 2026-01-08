@@ -181,3 +181,227 @@ impl AppState {
 }
 
 impl Global for AppState {}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::models::GitHubConfig;
+    use chrono::Utc;
+
+    fn create_test_repo(id: u64, name: &str, owner: &str) -> Repository {
+        Repository {
+            id,
+            name: name.to_string(),
+            full_name: format!("{}/{}", owner, name),
+            owner: owner.to_string(),
+            description: None,
+            language: None,
+            stargazers_count: 0,
+            forks_count: 0,
+            open_issues_count: 0,
+            license: None,
+            topics: vec![],
+            updated_at: Utc::now(),
+            pushed_at: None,
+            html_url: format!("https://github.com/{}/{}", owner, name),
+            starred_order: 0,
+        }
+    }
+
+    #[test]
+    fn test_app_screen_default() {
+        let screen = AppScreen::default();
+        assert_eq!(screen, AppScreen::Setup);
+    }
+
+    #[test]
+    fn test_sort_field_label() {
+        assert_eq!(SortField::Starred.label(), "Starred");
+        assert_eq!(SortField::Pushed.label(), "Pushed");
+    }
+
+    #[test]
+    fn test_sort_field_api_value() {
+        assert_eq!(SortField::Starred.api_value(), "created");
+        assert_eq!(SortField::Pushed.api_value(), "updated");
+    }
+
+    #[test]
+    fn test_sort_field_all() {
+        let all = SortField::all();
+        assert_eq!(all.len(), 2);
+        assert!(all.contains(&SortField::Starred));
+        assert!(all.contains(&SortField::Pushed));
+    }
+
+    #[test]
+    fn test_sort_direction_toggle() {
+        assert_eq!(SortDirection::Asc.toggle(), SortDirection::Desc);
+        assert_eq!(SortDirection::Desc.toggle(), SortDirection::Asc);
+    }
+
+    #[test]
+    fn test_sort_direction_label() {
+        assert_eq!(SortDirection::Asc.label(), "↑");
+        assert_eq!(SortDirection::Desc.label(), "↓");
+    }
+
+    #[test]
+    fn test_sort_direction_api_value() {
+        assert_eq!(SortDirection::Asc.api_value(), "asc");
+        assert_eq!(SortDirection::Desc.api_value(), "desc");
+    }
+
+    #[test]
+    fn test_app_state_default() {
+        let state = AppState::default();
+        assert_eq!(state.screen, AppScreen::Setup);
+        assert!(state.repositories.is_empty());
+        assert_eq!(state.selection.count(), 0);
+        assert!(!state.loading);
+        assert!(state.error.is_none());
+        assert!(state.username.is_none());
+        assert!(state.pending_action.is_none());
+        assert_eq!(state.sort_field, SortField::Pushed);
+        assert_eq!(state.sort_direction, SortDirection::Asc);
+    }
+
+    #[test]
+    fn test_from_config_with_token() {
+        let config = AppConfig {
+            github: GitHubConfig {
+                personal_access_token: Some("valid_token".to_string()),
+            },
+        };
+
+        let state = AppState::from_config(config);
+        assert_eq!(state.screen, AppScreen::Loading);
+        assert_eq!(state.current_page, 1);
+        assert!(state.has_more);
+    }
+
+    #[test]
+    fn test_from_config_without_token() {
+        let config = AppConfig {
+            github: GitHubConfig {
+                personal_access_token: None,
+            },
+        };
+
+        let state = AppState::from_config(config);
+        assert_eq!(state.screen, AppScreen::Setup);
+    }
+
+    #[test]
+    fn test_from_config_with_empty_token() {
+        let config = AppConfig {
+            github: GitHubConfig {
+                personal_access_token: Some("".to_string()),
+            },
+        };
+
+        let state = AppState::from_config(config);
+        assert_eq!(state.screen, AppScreen::Setup);
+    }
+
+    #[test]
+    fn test_get_selected_repos() {
+        let mut state = AppState::default();
+        state.repositories = vec![
+            create_test_repo(1, "repo1", "owner1"),
+            create_test_repo(2, "repo2", "owner2"),
+            create_test_repo(3, "repo3", "owner3"),
+        ];
+
+        state.selection.toggle(1);
+        state.selection.toggle(3);
+
+        let selected = state.get_selected_repos();
+        assert_eq!(selected.len(), 2);
+        assert!(selected.contains(&("owner1".to_string(), "repo1".to_string())));
+        assert!(selected.contains(&("owner3".to_string(), "repo3".to_string())));
+    }
+
+    #[test]
+    fn test_get_selected_ids() {
+        let mut state = AppState::default();
+        state.repositories = vec![
+            create_test_repo(1, "repo1", "owner1"),
+            create_test_repo(2, "repo2", "owner2"),
+        ];
+
+        state.selection.toggle(1);
+        state.selection.toggle(2);
+
+        let ids = state.get_selected_ids();
+        assert_eq!(ids.len(), 2);
+        assert!(ids.contains(&1));
+        assert!(ids.contains(&2));
+    }
+
+    #[test]
+    fn test_remove_repos() {
+        let mut state = AppState::default();
+        state.repositories = vec![
+            create_test_repo(1, "repo1", "owner1"),
+            create_test_repo(2, "repo2", "owner2"),
+            create_test_repo(3, "repo3", "owner3"),
+        ];
+
+        state.selection.toggle(1);
+        state.selection.toggle(2);
+        state.selection.toggle(3);
+
+        state.remove_repos(&[1, 3]);
+
+        assert_eq!(state.repositories.len(), 1);
+        assert_eq!(state.repositories[0].id, 2);
+        assert_eq!(state.selection.count(), 1);
+        assert!(state.selection.is_selected(2));
+    }
+
+    #[test]
+    fn test_clear_error() {
+        let mut state = AppState::default();
+        state.error = Some("Test error".to_string());
+
+        state.clear_error();
+        assert!(state.error.is_none());
+    }
+
+    #[test]
+    fn test_set_error() {
+        let mut state = AppState::default();
+
+        state.set_error("Something went wrong".to_string());
+        assert_eq!(state.error, Some("Something went wrong".to_string()));
+    }
+
+    #[test]
+    fn test_pending_action_variants() {
+        let single = PendingAction::UnstarSingle(1, "owner".to_string(), "repo".to_string(), "owner/repo".to_string());
+        let selected = PendingAction::UnstarSelected(5);
+        let logout = PendingAction::Logout;
+
+        // Just verify we can create these variants
+        match single {
+            PendingAction::UnstarSingle(id, owner, name, full_name) => {
+                assert_eq!(id, 1);
+                assert_eq!(owner, "owner");
+                assert_eq!(name, "repo");
+                assert_eq!(full_name, "owner/repo");
+            }
+            _ => panic!("Expected UnstarSingle"),
+        }
+
+        match selected {
+            PendingAction::UnstarSelected(count) => assert_eq!(count, 5),
+            _ => panic!("Expected UnstarSelected"),
+        }
+
+        match logout {
+            PendingAction::Logout => {}
+            _ => panic!("Expected Logout"),
+        }
+    }
+}
