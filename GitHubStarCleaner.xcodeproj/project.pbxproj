@@ -1,0 +1,414 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E0000001001 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = E0000002001 /* AppIcon.icns */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		E0000002001 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
+		E0000002002 /* GitHub Star Cleaner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GitHub Star Cleaner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0000002003 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E0000002004 /* GitHubStarCleaner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GitHubStarCleaner.entitlements; sourceTree = "<group>"; };
+		E0000002005 /* Cargo.toml */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cargo.toml; sourceTree = "<group>"; };
+		E0000002006 /* main.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.rs; sourceTree = "<group>"; };
+		E0000002007 /* lib.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = lib.rs; sourceTree = "<group>"; };
+		E0000002008 /* app_state.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = app_state.rs; sourceTree = "<group>"; };
+		E0000002009 /* app_view.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = app_view.rs; sourceTree = "<group>"; };
+		E0000002010 /* setup_view.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = setup_view.rs; sourceTree = "<group>"; };
+		E0000002011 /* repository_list.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = repository_list.rs; sourceTree = "<group>"; };
+		E0000002012 /* repository_row.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = repository_row.rs; sourceTree = "<group>"; };
+		E0000002013 /* github.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = github.rs; sourceTree = "<group>"; };
+		E0000002014 /* config.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = config.rs; sourceTree = "<group>"; };
+		E0000002015 /* repository.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = repository.rs; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		E0000003001 = {
+			isa = PBXGroup;
+			children = (
+				E0000003002 /* src */,
+				E0000003003 /* Resources */,
+				E0000003004 /* Config */,
+				E0000002005 /* Cargo.toml */,
+				E0000003005 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E0000003002 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				E0000002006 /* main.rs */,
+				E0000002007 /* lib.rs */,
+				E0000003006 /* state */,
+				E0000003007 /* ui */,
+				E0000003008 /* services */,
+				E0000003009 /* models */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		E0000003003 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E0000002001 /* AppIcon.icns */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
+		E0000003004 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				E0000002003 /* Info.plist */,
+				E0000002004 /* GitHubStarCleaner.entitlements */,
+			);
+			path = xcode;
+			sourceTree = "<group>";
+		};
+		E0000003005 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E0000002002 /* GitHub Star Cleaner.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E0000003006 /* state */ = {
+			isa = PBXGroup;
+			children = (
+				E0000002008 /* app_state.rs */,
+			);
+			path = state;
+			sourceTree = "<group>";
+		};
+		E0000003007 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				E0000002009 /* app_view.rs */,
+				E0000002010 /* setup_view.rs */,
+				E0000002011 /* repository_list.rs */,
+				E0000002012 /* repository_row.rs */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
+		E0000003008 /* services */ = {
+			isa = PBXGroup;
+			children = (
+				E0000002013 /* github.rs */,
+				E0000002014 /* config.rs */,
+			);
+			path = services;
+			sourceTree = "<group>";
+		};
+		E0000003009 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				E0000002015 /* repository.rs */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E0000004001 /* GitHub Star Cleaner */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E0000006001 /* Build configuration list for PBXNativeTarget "GitHub Star Cleaner" */;
+			buildPhases = (
+				E0000005001 /* Build Rust Binary */,
+				E0000005002 /* Copy Binary and dSYM */,
+				E0000005003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "GitHub Star Cleaner";
+			productName = "GitHub Star Cleaner";
+			productReference = E0000002002 /* GitHub Star Cleaner.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E0000007001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					E0000004001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = E0000006002 /* Build configuration list for PBXProject "GitHubStarCleaner" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E0000003001;
+			productRefGroup = E0000003005 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E0000004001 /* GitHub Star Cleaner */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E0000005003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0000001001 /* AppIcon.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E0000005001 /* Build Rust Binary */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"$(SRCROOT)/xcode/RustInputFiles.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "Build Rust Binary";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/target/$(RUST_BUILD_CONFIGURATION)/github-starcleaner",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "#!/bin/bash\nset -e\n\n# Ensure cargo is in PATH\nexport PATH=\"$HOME/.cargo/bin:/opt/homebrew/bin:/usr/local/bin:$PATH\"\n\ncd \"${SRCROOT}\"\n\n# Determine build configuration\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    echo \"note: Building Rust (Release)...\"\n    RUST_FLAGS=\"--release\"\n    export RUST_BUILD_CONFIGURATION=\"release\"\nelse\n    echo \"note: Building Rust (Debug)...\"\n    RUST_FLAGS=\"\"\n    export RUST_BUILD_CONFIGURATION=\"debug\"\nfi\n\n# Build with cargo\ncargo build ${RUST_FLAGS} 2>&1 | while read line; do\n    # Convert cargo output to Xcode-friendly format\n    if [[ \"$line\" == *\"error\"* ]]; then\n        echo \"error: $line\"\n    elif [[ \"$line\" == *\"warning\"* ]]; then\n        echo \"warning: $line\"\n    else\n        echo \"$line\"\n    fi\ndone\n\n# Check if build succeeded\nif [ ${PIPESTATUS[0]} -ne 0 ]; then\n    echo \"error: Cargo build failed\"\n    exit 1\nfi\n\necho \"note: Rust build completed successfully\"\n";
+		};
+		E0000005002 /* Copy Binary and dSYM */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/target/$(RUST_BUILD_CONFIGURATION)/github-starcleaner",
+			);
+			name = "Copy Binary and dSYM";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(CONTENTS_FOLDER_PATH)/MacOS/github-starcleaner",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "#!/bin/bash\nset -e\n\nBINARY_NAME=\"github-starcleaner\"\n\n# Determine build configuration\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    CARGO_TARGET_DIR=\"${SRCROOT}/target/release\"\nelse\n    CARGO_TARGET_DIR=\"${SRCROOT}/target/debug\"\nfi\n\nSOURCE_BINARY=\"${CARGO_TARGET_DIR}/${BINARY_NAME}\"\nDEST_DIR=\"${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/MacOS\"\nDEST_BINARY=\"${DEST_DIR}/${BINARY_NAME}\"\n\n# Create destination directory\nmkdir -p \"${DEST_DIR}\"\n\n# Copy binary\ncp \"${SOURCE_BINARY}\" \"${DEST_BINARY}\"\necho \"note: Binary copied to ${DEST_BINARY}\"\n\n# Copy dSYM for debugging (if exists)\nDSYM_SOURCE=\"${CARGO_TARGET_DIR}/deps/${BINARY_NAME}.dSYM\"\nDSYM_DEST=\"${BUILT_PRODUCTS_DIR}/${BINARY_NAME}.dSYM\"\n\nif [ -d \"${DSYM_SOURCE}\" ]; then\n    cp -R \"${DSYM_SOURCE}\" \"${DSYM_DEST}\"\n    echo \"note: dSYM copied to ${DSYM_DEST}\"\nelse\n    # Try generating dSYM with dsymutil\n    if [ \"${CONFIGURATION}\" = \"Debug\" ]; then\n        dsymutil \"${SOURCE_BINARY}\" -o \"${DSYM_DEST}\" 2>/dev/null || true\n        if [ -d \"${DSYM_DEST}\" ]; then\n            echo \"note: dSYM generated at ${DSYM_DEST}\"\n        fi\n    fi\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		E0000008001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				RUST_BUILD_CONFIGURATION = debug;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		E0000008002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				RUST_BUILD_CONFIGURATION = release;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		E0000008003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = xcode/GitHubStarCleaner.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = xcode/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "GitHub Star Cleaner";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LLDB_INIT_FILE = "$(SRCROOT)/xcode/lldb-init";
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.starcleaner;
+				PRODUCT_NAME = "GitHub Star Cleaner";
+			};
+			name = Debug;
+		};
+		E0000008004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = xcode/GitHubStarCleaner.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = xcode/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "GitHub Star Cleaner";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.starcleaner;
+				PRODUCT_NAME = "GitHub Star Cleaner";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E0000006001 /* Build configuration list for PBXNativeTarget "GitHub Star Cleaner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E0000008003 /* Debug */,
+				E0000008004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E0000006002 /* Build configuration list for PBXProject "GitHubStarCleaner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E0000008001 /* Debug */,
+				E0000008002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = E0000007001 /* Project object */;
+}

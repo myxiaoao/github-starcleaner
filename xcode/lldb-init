@@ -1,0 +1,23 @@
+# LLDB init file for Rust debugging in Xcode
+# This file configures LLDB to better handle Rust types
+
+# Enable Rust formatters
+command script import lldb.macosx.heap
+
+# Set source map for Rust standard library (adjust path as needed)
+settings set target.source-map /rustc/ ~/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/
+
+# Improve display of Rust strings
+type summary add --summary-string "${var.vec.buf.ptr.pointer.0.__0}" "alloc::string::String"
+type summary add --summary-string "${var.data_ptr}[0-${var.length}]" "&str"
+
+# Better Vec display
+type summary add --summary-string "len=${var.len}" "alloc::vec::Vec<*>"
+
+# Better Option display
+type summary add --summary-string "Some(${var.__0})" "core::option::Option<*>::Some<*>"
+type summary add --summary-string "None" "core::option::Option<*>::None"
+
+# Better Result display
+type summary add --summary-string "Ok(${var.__0})" "core::result::Result<*>::Ok<*>"
+type summary add --summary-string "Err(${var.__0})" "core::result::Result<*>::Err<*>"

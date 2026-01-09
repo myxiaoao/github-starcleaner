@@ -1,0 +1,17 @@
+$(SRCROOT)/Cargo.toml
+$(SRCROOT)/Cargo.lock
+$(SRCROOT)/src/main.rs
+$(SRCROOT)/src/lib.rs
+$(SRCROOT)/src/state/mod.rs
+$(SRCROOT)/src/state/app_state.rs
+$(SRCROOT)/src/ui/mod.rs
+$(SRCROOT)/src/ui/app_view.rs
+$(SRCROOT)/src/ui/setup_view.rs
+$(SRCROOT)/src/ui/repository_list.rs
+$(SRCROOT)/src/ui/repository_row.rs
+$(SRCROOT)/src/services/mod.rs
+$(SRCROOT)/src/services/github.rs
+$(SRCROOT)/src/services/config.rs
+$(SRCROOT)/src/models/mod.rs
+$(SRCROOT)/src/models/config.rs
+$(SRCROOT)/src/models/repository.rs
