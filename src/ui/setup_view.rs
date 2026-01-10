@@ -1,5 +1,6 @@
 use crate::services::{ConfigService, GitHubService};
 use crate::state::{AppScreen, AppState};
+use crate::ui::catppuccin;
 use gpui::prelude::FluentBuilder;
 use gpui::*;
 
@@ -98,7 +99,7 @@ impl Render for SetupView {
             .flex()
             .items_center()
             .justify_center()
-            .bg(rgb(0x1e1e2e))
+            .bg(rgb(catppuccin::BASE))
             .track_focus(&self.focus_handle)
             .on_key_down(cx.listener(|this, event, _window, cx| {
                 this.handle_key_down(event, cx);
@@ -107,10 +108,10 @@ impl Render for SetupView {
                 div()
                     .w(px(420.))
                     .p_8()
-                    .bg(rgb(0x313244))
+                    .bg(rgb(catppuccin::SURFACE0))
                     .rounded_lg()
                     .border_1()
-                    .border_color(rgb(0x45475a))
+                    .border_color(rgb(catppuccin::SURFACE1))
                     .child(
                         div()
                             .flex()
@@ -126,13 +127,13 @@ impl Render for SetupView {
                                         div()
                                             .text_xl()
                                             .font_weight(FontWeight::BOLD)
-                                            .text_color(rgb(0xcdd6f4))
+                                            .text_color(rgb(catppuccin::TEXT))
                                             .child("GitHub StarCleaner"),
                                     )
                                     .child(
                                         div()
                                             .text_sm()
-                                            .text_color(rgb(0xa6adc8))
+                                            .text_color(rgb(catppuccin::SUBTEXT0))
                                             .child("Enter your GitHub Personal Access Token to manage your starred repositories."),
                                     ),
                             )
@@ -146,7 +147,7 @@ impl Render for SetupView {
                                         div()
                                             .text_sm()
                                             .font_weight(FontWeight::MEDIUM)
-                                            .text_color(rgb(0xcdd6f4))
+                                            .text_color(rgb(catppuccin::TEXT))
                                             .child("Personal Access Token"),
                                     )
                                     .child(self.render_input(window, cx))
@@ -154,7 +155,7 @@ impl Render for SetupView {
                                         this.child(
                                             div()
                                                 .text_sm()
-                                                .text_color(rgb(0xf38ba8))
+                                                .text_color(rgb(catppuccin::RED))
                                                 .child(err),
                                         )
                                     }),
@@ -165,14 +166,14 @@ impl Render for SetupView {
                             .child(
                                 div()
                                     .text_xs()
-                                    .text_color(rgb(0x6c7086))
+                                    .text_color(rgb(catppuccin::OVERLAY0))
                                     .child("Token requires 'repo' or 'public_repo' scope for starring/unstarring."),
                             )
                             // Instructions
                             .child(
                                 div()
                                     .text_xs()
-                                    .text_color(rgb(0x6c7086))
+                                    .text_color(rgb(catppuccin::OVERLAY0))
                                     .mt_2()
                                     .child("Type your token or paste with Cmd+V. Press Enter to connect."),
                             ),
@@ -192,12 +193,12 @@ impl SetupView {
             .w_full()
             .h(px(40.))
             .px_3()
-            .bg(rgb(0x1e1e2e))
+            .bg(rgb(catppuccin::BASE))
             .border_1()
             .border_color(if is_focused {
-                rgb(0x89b4fa)
+                rgb(catppuccin::BLUE)
             } else {
-                rgb(0x45475a)
+                rgb(catppuccin::SURFACE1)
             })
             .rounded_md()
             .flex()
@@ -211,9 +212,9 @@ impl SetupView {
                     .flex_1()
                     .text_sm()
                     .text_color(if input_len == 0 {
-                        rgb(0x6c7086)
+                        rgb(catppuccin::OVERLAY0)
                     } else {
-                        rgb(0xcdd6f4)
+                        rgb(catppuccin::TEXT)
                     })
                     .child(if input_len == 0 {
                         "ghp_xxxxxxxxxxxx".to_string()
@@ -241,14 +242,14 @@ impl SetupView {
             .rounded_md()
             .cursor_pointer()
             .bg(if is_disabled {
-                rgb(0x45475a)
+                rgb(catppuccin::SURFACE1)
             } else {
-                rgb(0x89b4fa)
+                rgb(catppuccin::BLUE)
             })
             .text_color(if is_disabled {
-                rgb(0x6c7086)
+                rgb(catppuccin::OVERLAY0)
             } else {
-                rgb(0x1e1e2e)
+                rgb(catppuccin::BASE)
             })
             .font_weight(FontWeight::MEDIUM)
             .child(if validating {
@@ -257,7 +258,7 @@ impl SetupView {
                 "Connect"
             })
             .when(!is_disabled, |this| {
-                this.hover(|style| style.bg(rgb(0x74c7ec)))
+                this.hover(|style| style.bg(rgb(catppuccin::SAPPHIRE)))
                     .on_click(cx.listener(|this, _event, _window, cx| {
                         this.submit_token(cx);
                     }))
@@ -312,9 +313,5 @@ impl SetupView {
             .ok();
         })
         .detach();
-    }
-
-    pub fn set_token(&mut self, token: String) {
-        self.token_input = token;
     }
 }

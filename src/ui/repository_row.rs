@@ -1,28 +1,32 @@
 use crate::models::Repository;
 use crate::state::AppState;
+use crate::ui::catppuccin;
 use gpui::prelude::FluentBuilder;
 use gpui::*;
-
-/// Callback type for unstar action
-pub type UnstarCallback = Box<dyn Fn(u64, String, String, &mut App) + 'static>;
 
 pub fn render_repository_row(
     repo: Repository,
     is_selected: bool,
     on_unstar: impl Fn(u64, &mut App) + 'static,
 ) -> impl IntoElement {
-    let repo_id = repo.id;
-    let full_name = repo.full_name.clone();
-    let html_url = repo.html_url.clone();
-    let description = repo.description.clone();
-    let language = repo.language.clone();
-    let stargazers_count = repo.stargazers_count;
-    let forks_count = repo.forks_count;
-    let open_issues_count = repo.open_issues_count;
-    let license = repo.license.clone();
-    let topics = repo.topics.clone();
-    let updated_at = repo.updated_at.format("%Y-%m-%d").to_string();
-    let pushed_at = repo.pushed_at.map(|dt| dt.format("%Y-%m-%d").to_string());
+    let Repository {
+        id: repo_id,
+        full_name,
+        html_url,
+        description,
+        language,
+        stargazers_count,
+        forks_count,
+        open_issues_count,
+        license,
+        topics,
+        updated_at,
+        pushed_at,
+        ..
+    } = repo;
+
+    let updated_at = updated_at.format("%Y-%m-%d").to_string();
+    let pushed_at = pushed_at.map(|dt| dt.format("%Y-%m-%d").to_string());
 
     div()
         .id(ElementId::Name(format!("repo-row-{}", repo_id).into()))
@@ -33,8 +37,8 @@ pub fn render_repository_row(
         .gap_3()
         .items_start() // Align children to top
         .border_b_1()
-        .border_color(rgb(0x45475a))
-        .hover(|style| style.bg(rgb(0x313244)))
+        .border_color(rgb(catppuccin::SURFACE1))
+        .hover(|style| style.bg(rgb(catppuccin::SURFACE0)))
         // Checkbox - fixed width, aligned to top
         .child(
             div()
@@ -49,18 +53,18 @@ pub fn render_repository_row(
                 .rounded_sm()
                 .border_1()
                 .border_color(if is_selected {
-                    rgb(0x89b4fa)
+                    rgb(catppuccin::BLUE)
                 } else {
-                    rgb(0x45475a)
+                    rgb(catppuccin::SURFACE1)
                 })
                 .bg(if is_selected {
-                    rgb(0x89b4fa)
+                    rgb(catppuccin::BLUE)
                 } else {
-                    rgb(0x1e1e2e)
+                    rgb(catppuccin::BASE)
                 })
                 .cursor_pointer()
                 .child(if is_selected {
-                    div().text_sm().text_color(rgb(0x1e1e2e)).child("✓")
+                    div().text_sm().text_color(rgb(catppuccin::BASE)).child("✓")
                 } else {
                     div()
                 })
@@ -94,7 +98,7 @@ pub fn render_repository_row(
                                 .whitespace_nowrap()
                                 .text_base()
                                 .font_weight(FontWeight::SEMIBOLD)
-                                .text_color(rgb(0x89b4fa))
+                                .text_color(rgb(catppuccin::BLUE))
                                 .cursor_pointer()
                                 .hover(|style| style.underline())
                                 .child(full_name)
@@ -113,9 +117,9 @@ pub fn render_repository_row(
                                     .px_2()
                                     .py(px(2.))
                                     .rounded_sm()
-                                    .bg(rgb(0x45475a))
+                                    .bg(rgb(catppuccin::SURFACE1))
                                     .text_xs()
-                                    .text_color(rgb(0xa6adc8))
+                                    .text_color(rgb(catppuccin::SUBTEXT0))
                                     .child(lang),
                             )
                         }),
@@ -130,7 +134,7 @@ pub fn render_repository_row(
                     this.child(
                         div()
                             .text_sm()
-                            .text_color(rgb(0xa6adc8))
+                            .text_color(rgb(catppuccin::SUBTEXT0))
                             .overflow_hidden()
                             .whitespace_nowrap()
                             .child(truncated),
@@ -142,7 +146,7 @@ pub fn render_repository_row(
                         .flex()
                         .gap_4()
                         .text_xs()
-                        .text_color(rgb(0x6c7086))
+                        .text_color(rgb(catppuccin::OVERLAY0))
                         .child(format!("★ {}", stargazers_count))
                         .child(format!("⑂ {}", forks_count))
                         .child(format!("⚠ {}", open_issues_count))
@@ -163,9 +167,9 @@ pub fn render_repository_row(
                                     .px_2()
                                     .py(px(2.))
                                     .rounded_full()
-                                    .bg(rgb(0x313244))
+                                    .bg(rgb(catppuccin::SURFACE0))
                                     .text_xs()
-                                    .text_color(rgb(0xa6adc8))
+                                    .text_color(rgb(catppuccin::SUBTEXT0))
                                     .child(topic.clone())
                             })),
                     )
@@ -181,11 +185,11 @@ pub fn render_repository_row(
                 .py_1()
                 .h_auto()
                 .rounded_md()
-                .bg(rgb(0x45475a))
+                .bg(rgb(catppuccin::SURFACE1))
                 .text_xs()
-                .text_color(rgb(0xf38ba8))
+                .text_color(rgb(catppuccin::RED))
                 .cursor_pointer()
-                .hover(|style| style.bg(rgb(0x585b70)))
+                .hover(|style| style.bg(rgb(catppuccin::SURFACE2)))
                 .child("Unstar")
                 .on_click(move |_event, _window, cx| {
                     on_unstar(repo_id, cx);

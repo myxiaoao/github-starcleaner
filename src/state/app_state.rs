@@ -1,5 +1,5 @@
 use crate::models::{AppConfig, Repository, RepositorySelection};
-use crate::services::{ConfigService, GitHubService};
+use crate::services::{is_token_expired_error, ConfigService, GitHubService};
 use gpui::Global;
 
 /// Current view/screen in the application
@@ -177,6 +177,16 @@ impl AppState {
         ConfigService::clear_token()?;
         self.config.github.personal_access_token = None;
         Ok(())
+    }
+
+    /// Handle API errors, with special handling for token expiration
+    pub fn handle_api_error(&mut self, err: anyhow::Error, context: &str) {
+        if is_token_expired_error(&err) {
+            let _ = self.logout();
+            self.error = Some("Token expired. Please login again.".to_string());
+        } else {
+            self.error = Some(format!("{}: {}", context, err));
+        }
     }
 }
 

@@ -16,6 +16,11 @@ impl std::fmt::Display for TokenExpiredError {
 
 impl std::error::Error for TokenExpiredError {}
 
+/// Check if an error indicates token expiration
+pub fn is_token_expired_error(err: &anyhow::Error) -> bool {
+    err.downcast_ref::<TokenExpiredError>().is_some()
+}
+
 // Global Tokio runtime for octocrab async operations
 fn tokio_runtime() -> &'static Runtime {
     static RUNTIME: OnceLock<Runtime> = OnceLock::new();

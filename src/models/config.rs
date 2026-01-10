@@ -37,9 +37,8 @@ impl AppConfig {
     pub fn get_token(&self) -> Option<&str> {
         self.github
             .personal_access_token
-            .as_ref()
+            .as_deref()
             .filter(|t| !t.is_empty())
-            .map(|s| s.as_str())
     }
 }
 

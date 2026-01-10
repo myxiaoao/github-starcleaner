@@ -1,12 +1,10 @@
-use crate::models::Repository;
+use crate::services::is_token_expired_error;
 use crate::state::{AppState, PendingAction, SortDirection, SortField};
-use crate::ui::render_repository_row;
+use crate::ui::{catppuccin, render_repository_row};
 use gpui::prelude::FluentBuilder;
 use gpui::*;
 
-pub struct RepositoryListView {
-    filter_text: String,
-}
+pub struct RepositoryListView;
 
 impl RepositoryListView {
     pub fn new(cx: &mut Context<Self>) -> Self {
@@ -16,33 +14,7 @@ impl RepositoryListView {
             cx.notify();
         }).detach();
 
-        Self {
-            filter_text: String::new(),
-        }
-    }
-
-    fn filtered_repos<'a>(&self, repos: &'a [Repository]) -> Vec<&'a Repository> {
-        if self.filter_text.is_empty() {
-            repos.iter().collect()
-        } else {
-            let query = self.filter_text.to_lowercase();
-            repos
-                .iter()
-                .filter(|r| {
-                    r.name.to_lowercase().contains(&query)
-                        || r.full_name.to_lowercase().contains(&query)
-                        || r.description
-                            .as_ref()
-                            .map(|d| d.to_lowercase().contains(&query))
-                            .unwrap_or(false)
-                        || r.language
-                            .as_ref()
-                            .map(|l| l.to_lowercase().contains(&query))
-                            .unwrap_or(false)
-                        || r.topics.iter().any(|t| t.to_lowercase().contains(&query))
-                })
-                .collect()
-        }
+        Self
     }
 }
 
@@ -52,7 +24,6 @@ impl Render for RepositoryListView {
         let (
             selection_count,
             total_count,
-            filtered_count,
             all_selected,
             username,
             pending_action,
@@ -65,34 +36,29 @@ impl Render for RepositoryListView {
         ) = {
             let state = cx.global::<AppState>();
             let repos = &state.repositories;
-            let sort_field = state.sort_field;
-            let sort_direction = state.sort_direction;
-            let filtered = self.filtered_repos(repos);
             let selection_count = state.selection.count();
             let total_count = repos.len();
-            let filtered_count = filtered.len();
             let all_selected = selection_count == total_count && total_count > 0;
 
-            let repos_for_render: Vec<_> = filtered
+            let repos_for_render: Vec<_> = repos
                 .iter()
                 .map(|r| {
                     let is_selected = state.selection.is_selected(r.id);
-                    ((*r).clone(), is_selected)
+                    (r.clone(), is_selected)
                 })
                 .collect();
 
             (
                 selection_count,
                 total_count,
-                filtered_count,
                 all_selected,
                 state.username.clone().unwrap_or_default(),
                 state.pending_action.clone(),
                 state.has_more,
                 state.loading_more,
                 state.loading,
-                sort_field,
-                sort_direction,
+                state.sort_field,
+                state.sort_direction,
                 repos_for_render,
             )
         };
@@ -102,7 +68,7 @@ impl Render for RepositoryListView {
             .relative()
             .flex()
             .flex_col()
-            .bg(rgb(0x1e1e2e))
+            .bg(rgb(catppuccin::BASE))
             // Header
             .child(
                 div()
@@ -113,8 +79,8 @@ impl Render for RepositoryListView {
                     .items_center()
                     .gap_4()
                     .border_b_1()
-                    .border_color(rgb(0x45475a))
-                    .bg(rgb(0x181825))
+                    .border_color(rgb(catppuccin::SURFACE1))
+                    .bg(rgb(catppuccin::MANTLE))
                     // Title
                     .child(
                         div()
@@ -125,14 +91,14 @@ impl Render for RepositoryListView {
                                 div()
                                     .text_lg()
                                     .font_weight(FontWeight::BOLD)
-                                    .text_color(rgb(0xcdd6f4))
+                                    .text_color(rgb(catppuccin::TEXT))
                                     .child(format!("Starred Repositories ({})", total_count)),
                             )
                             .when(!username.is_empty(), |this| {
                                 this.child(
                                     div()
                                         .text_sm()
-                                        .text_color(rgb(0x6c7086))
+                                        .text_color(rgb(catppuccin::OVERLAY0))
                                         .child(format!("@{}", username)),
                                 )
                             }),
@@ -148,9 +114,9 @@ impl Render for RepositoryListView {
                                 .px_4()
                                 .py_2()
                                 .rounded_md()
-                                .bg(rgb(0xf38ba8))
+                                .bg(rgb(catppuccin::RED))
                                 .text_sm()
-                                .text_color(rgb(0x1e1e2e))
+                                .text_color(rgb(catppuccin::BASE))
                                 .font_weight(FontWeight::MEDIUM)
                                 .cursor_pointer()
                                 .hover(|style| style.opacity(0.9))
@@ -169,11 +135,11 @@ impl Render for RepositoryListView {
                             .px_3()
                             .py_2()
                             .rounded_md()
-                            .bg(rgb(0x45475a))
+                            .bg(rgb(catppuccin::SURFACE1))
                             .text_sm()
-                            .text_color(rgb(0xa6adc8))
+                            .text_color(rgb(catppuccin::SUBTEXT0))
                             .cursor_pointer()
-                            .hover(|style| style.bg(rgb(0x585b70)))
+                            .hover(|style| style.bg(rgb(catppuccin::SURFACE2)))
                             .child("Logout")
                             .on_click(cx.listener(|_this, _event, _window, cx| {
                                 cx.update_global::<AppState, _>(|state, _cx| {
@@ -192,8 +158,8 @@ impl Render for RepositoryListView {
                     .items_center()
                     .gap_4()
                     .border_b_1()
-                    .border_color(rgb(0x45475a))
-                    .bg(rgb(0x313244))
+                    .border_color(rgb(catppuccin::SURFACE1))
+                    .bg(rgb(catppuccin::SURFACE0))
                     // Select All checkbox
                     .child(
                         div()
@@ -212,17 +178,17 @@ impl Render for RepositoryListView {
                                     .rounded_sm()
                                     .border_1()
                                     .border_color(if all_selected {
-                                        rgb(0x89b4fa)
+                                        rgb(catppuccin::BLUE)
                                     } else {
-                                        rgb(0x45475a)
+                                        rgb(catppuccin::SURFACE1)
                                     })
                                     .bg(if all_selected {
-                                        rgb(0x89b4fa)
+                                        rgb(catppuccin::BLUE)
                                     } else {
-                                        rgb(0x1e1e2e)
+                                        rgb(catppuccin::BASE)
                                     })
                                     .child(if all_selected {
-                                        div().text_xs().text_color(rgb(0x1e1e2e)).child("✓")
+                                        div().text_xs().text_color(rgb(catppuccin::BASE)).child("✓")
                                     } else {
                                         div()
                                     }),
@@ -230,7 +196,7 @@ impl Render for RepositoryListView {
                             .child(
                                 div()
                                     .text_sm()
-                                    .text_color(rgb(0xcdd6f4))
+                                    .text_color(rgb(catppuccin::TEXT))
                                     .child("Select All"),
                             )
                             .on_click(cx.listener(|this, _event, _window, cx| {
@@ -246,7 +212,7 @@ impl Render for RepositoryListView {
                             .child(
                                 div()
                                     .text_sm()
-                                    .text_color(rgb(0x6c7086))
+                                    .text_color(rgb(catppuccin::OVERLAY0))
                                     .child("Sort:"),
                             )
                             // Sort field buttons
@@ -261,20 +227,20 @@ impl Render for RepositoryListView {
                                     .text_xs()
                                     .cursor_pointer()
                                     .bg(if is_active {
-                                        rgb(0x89b4fa)
+                                        rgb(catppuccin::BLUE)
                                     } else {
-                                        rgb(0x45475a)
+                                        rgb(catppuccin::SURFACE1)
                                     })
                                     .text_color(if is_active {
-                                        rgb(0x1e1e2e)
+                                        rgb(catppuccin::BASE)
                                     } else {
-                                        rgb(0xa6adc8)
+                                        rgb(catppuccin::SUBTEXT0)
                                     })
                                     .hover(|style| {
                                         if is_active {
                                             style
                                         } else {
-                                            style.bg(rgb(0x585b70))
+                                            style.bg(rgb(catppuccin::SURFACE2))
                                         }
                                     })
                                     .child(field.label())
@@ -304,9 +270,9 @@ impl Render for RepositoryListView {
                                     .rounded_sm()
                                     .text_xs()
                                     .cursor_pointer()
-                                    .bg(rgb(0x45475a))
-                                    .text_color(rgb(0xcdd6f4))
-                                    .hover(|style| style.bg(rgb(0x585b70)))
+                                    .bg(rgb(catppuccin::SURFACE1))
+                                    .text_color(rgb(catppuccin::TEXT))
+                                    .hover(|style| style.bg(rgb(catppuccin::SURFACE2)))
                                     .child(sort_direction.label())
                                     .on_click(cx.listener(|this, _event, _window, cx| {
                                         cx.update_global::<AppState, _>(|state, _cx| {
@@ -322,12 +288,8 @@ impl Render for RepositoryListView {
                     .child(
                         div()
                             .text_sm()
-                            .text_color(rgb(0x6c7086))
-                            .child(if filtered_count != total_count {
-                                format!("Showing {} of {}", filtered_count, total_count)
-                            } else {
-                                format!("{} repositories", total_count)
-                            }),
+                            .text_color(rgb(catppuccin::OVERLAY0))
+                            .child(format!("{} repositories", total_count)),
                     ),
             )
             // Repository list
@@ -346,7 +308,7 @@ impl Render for RepositoryListView {
                             .py_8()
                             .child(
                                 div()
-                                    .text_color(rgb(0x6c7086))
+                                    .text_color(rgb(catppuccin::OVERLAY0))
                                     .child("Loading...")
                             )
                             .into_any_element()
@@ -388,16 +350,16 @@ impl Render for RepositoryListView {
                                                 .py_2()
                                                 .rounded_md()
                                                 .bg(if loading_more {
-                                                    rgb(0x45475a)
+                                                    rgb(catppuccin::SURFACE1)
                                                 } else {
-                                                    rgb(0x89b4fa)
+                                                    rgb(catppuccin::BLUE)
                                                 })
                                                 .text_sm()
-                                                .text_color(rgb(0x1e1e2e))
+                                                .text_color(rgb(catppuccin::BASE))
                                                 .font_weight(FontWeight::MEDIUM)
                                                 .cursor_pointer()
                                                 .when(!loading_more, |this| {
-                                                    this.hover(|style| style.bg(rgb(0x74c7ec)))
+                                                    this.hover(|style| style.bg(rgb(catppuccin::SAPPHIRE)))
                                                 })
                                                 .child(if loading_more {
                                                     "Loading..."
@@ -471,12 +433,7 @@ impl RepositoryListView {
                             state.has_more = has_more;
                         }
                         Err(e) => {
-                            if e.to_string().contains("Token expired") {
-                                let _ = state.logout();
-                                state.error = Some("Token expired. Please login again.".to_string());
-                            } else {
-                                state.error = Some(format!("Failed to reload: {}", e));
-                            }
+                            state.handle_api_error(e, "Failed to reload");
                         }
                     }
                 })
@@ -534,12 +491,7 @@ impl RepositoryListView {
                             state.has_more = has_more;
                         }
                         Err(e) => {
-                            if e.to_string().contains("Token expired") {
-                                let _ = state.logout();
-                                state.error = Some("Token expired. Please login again.".to_string());
-                            } else {
-                                state.error = Some(format!("Failed to load more: {}", e));
-                            }
+                            state.handle_api_error(e, "Failed to load more");
                         }
                     }
                 })
@@ -585,9 +537,9 @@ impl RepositoryListView {
                 let results = service.unstar_repos(&repos_to_unstar).await;
 
                 // Check for token expiration
-                let token_expired = results.iter().any(|(_, _, result)| {
-                    result.as_ref().err().map(|e| e.to_string().contains("Token expired")).unwrap_or(false)
-                });
+                let token_expired = results
+                    .iter()
+                    .any(|(_, _, result)| result.as_ref().err().map(is_token_expired_error).unwrap_or(false));
 
                 if token_expired {
                     cx.update(|cx| {
@@ -668,9 +620,9 @@ impl RepositoryListView {
                     .w(px(400.))
                     .p_6()
                     .rounded_lg()
-                    .bg(rgb(0x313244))
+                    .bg(rgb(catppuccin::SURFACE0))
                     .border_1()
-                    .border_color(rgb(0x45475a))
+                    .border_color(rgb(catppuccin::SURFACE1))
                     .flex()
                     .flex_col()
                     .gap_4()
@@ -679,14 +631,14 @@ impl RepositoryListView {
                         div()
                             .text_lg()
                             .font_weight(FontWeight::BOLD)
-                            .text_color(rgb(0xcdd6f4))
+                            .text_color(rgb(catppuccin::TEXT))
                             .child(title),
                     )
                     // Message
                     .child(
                         div()
                             .text_sm()
-                            .text_color(rgb(0xa6adc8))
+                            .text_color(rgb(catppuccin::SUBTEXT0))
                             .child(message),
                     )
                     // Buttons
@@ -703,11 +655,11 @@ impl RepositoryListView {
                                     .px_4()
                                     .py_2()
                                     .rounded_md()
-                                    .bg(rgb(0x45475a))
+                                    .bg(rgb(catppuccin::SURFACE1))
                                     .text_sm()
-                                    .text_color(rgb(0xcdd6f4))
+                                    .text_color(rgb(catppuccin::TEXT))
                                     .cursor_pointer()
-                                    .hover(|style| style.bg(rgb(0x585b70)))
+                                    .hover(|style| style.bg(rgb(catppuccin::SURFACE2)))
                                     .child("Cancel")
                                     .on_click(cx.listener(|_this, _event, _window, cx| {
                                         cx.update_global::<AppState, _>(|state, _cx| {
@@ -722,9 +674,9 @@ impl RepositoryListView {
                                     .px_4()
                                     .py_2()
                                     .rounded_md()
-                                    .bg(rgb(0xf38ba8))
+                                    .bg(rgb(catppuccin::RED))
                                     .text_sm()
-                                    .text_color(rgb(0x1e1e2e))
+                                    .text_color(rgb(catppuccin::BASE))
                                     .font_weight(FontWeight::MEDIUM)
                                     .cursor_pointer()
                                     .hover(|style| style.opacity(0.9))
@@ -773,13 +725,10 @@ impl RepositoryListView {
                     }
                     Err(e) => {
                         tracing::error!("Unstar API error: {}", e);
-                        if e.to_string().contains("Token expired") {
-                            cx.update(|cx| {
-                                let state = cx.global_mut::<AppState>();
-                                let _ = state.logout();
-                                state.error = Some("Token expired. Please login again.".to_string());
-                            }).ok();
-                        }
+                        cx.update(|cx| {
+                            let state = cx.global_mut::<AppState>();
+                            state.handle_api_error(e, "Failed to unstar");
+                        }).ok();
                     }
                 }
             }
